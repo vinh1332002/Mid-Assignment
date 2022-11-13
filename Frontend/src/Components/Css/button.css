@@ -1,0 +1,42 @@
+.updateButton {
+    background-color: yellow;
+    color: green;
+    border-color: white;
+}
+
+.detailButton {
+    background-color: green;
+    color: white;
+    border-color: white;
+}
+
+.deleteButton {
+    background-color: red;
+    color: white;
+    border-color: white;
+}
+
+.createButton {
+    background-color: purple;
+    color: white;
+    border-color: white;
+}
+
+.submitButton {
+    background-color: green;
+    color: white;
+    border-color: white;
+}
+
+.backButton {
+    background-color: red;
+    color: white;
+    border-color: white;
+}
+
+.logoutButton {
+    background-color: yellow;
+    color: red;
+    border-color: white;
+}
+
