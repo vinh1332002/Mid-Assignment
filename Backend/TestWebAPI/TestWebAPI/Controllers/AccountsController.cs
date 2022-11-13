@@ -55,7 +55,8 @@ namespace TestWebAPI.Controllers
             return Ok(tokenString);
         }
 
-        [Authorize(Roles = UserRoles.SuperAdmin)]
+        [AllowAnonymous]
+        //[Authorize(Roles = UserRoles.SuperAdmin)]
         [HttpPost("user")]
         public async Task<IActionResult> CreateUser([FromBody] AddUserModel user)
         {
@@ -74,7 +75,8 @@ namespace TestWebAPI.Controllers
             }
         }
 
-        [Authorize(Roles = UserRoles.SuperAdmin)]
+        [AllowAnonymous]
+        //[Authorize(Roles = UserRoles.SuperAdmin)]
         [HttpGet("user/{id}")]
         public async Task<ActionResult> GetUsersById(Guid id)
         {
@@ -91,7 +93,8 @@ namespace TestWebAPI.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = UserRoles.SuperAdmin)]
+        [AllowAnonymous]
+        //[Authorize(Roles = UserRoles.SuperAdmin)]
         [HttpDelete("user/{userId}")]
         public async Task<ActionResult> DeleteBook(Guid userId)
         {
@@ -99,7 +102,8 @@ namespace TestWebAPI.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = UserRoles.SuperAdmin)]
+        [AllowAnonymous]
+        //[Authorize(Roles = UserRoles.SuperAdmin)]
         [HttpPut("user/{userId}")]
         public async Task<IActionResult> UpdateBook(Guid userId, [FromBody] AddUserModel updateModel)
         {

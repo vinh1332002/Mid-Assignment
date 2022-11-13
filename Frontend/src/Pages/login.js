@@ -11,13 +11,12 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import InputModel from "../Components/Forms/input";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../Hooks/authContext";
 import axios from "axios";
 
 const initialValues = {
-    email: "",
+    userName: "",
     password: "",
     read: false,
   };
@@ -34,7 +33,7 @@ const initialValues = {
     return "";
   };
   
-  const getEmailError = (value) => {
+  const getUserNameError = (value) => {
     return (
       required(value)
     );
@@ -55,7 +54,7 @@ const Login = () => {
       method: "post",
       url: "https://localhost:7233/api/user/login",
       data: {
-        userName: values.email,
+        userName: values.userName,
         password: values.password
       }
       
@@ -79,15 +78,15 @@ const Login = () => {
 
   const [values, setValues] = useState(initialValues);
 
-  const emailError = useMemo(() => {
-    return getEmailError(values.email);
-  }, [values.email]);
+  const userNameError = useMemo(() => {
+    return getUserNameError(values.userName);
+  }, [values.userName]);
 
   const passwordError = useMemo(() => {
     return getPasswordError(values.password);
   }, [values.password]);
 
-  const isFormValid = !emailError && !passwordError;
+  const isFormValid = !userNameError && !passwordError;
 
   const handleOnChange = (event) => {
     const newValues = {
@@ -117,12 +116,12 @@ const Login = () => {
           <h2>Sign in</h2>
         </Grid>
         <TextField
-          value={values.email}
+          value={values.userName}
           onChange={handleOnChange}
-          name="email"
+          name="userName"
           label="Username:"
           placeholder="Enter Username"
-          error={emailError}
+          error={userNameError}
         />
         <TextField
           value={values.password}
@@ -137,11 +136,9 @@ const Login = () => {
           label="Remember me"
         />
         <Button
-          //class="submitButton"
           type="button"
           disabled={!isFormValid}
           onClick={login}
-          //color="primary"
           variant="contained"
           fullWidth
         >

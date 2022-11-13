@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Space, Table } from "antd";
 import "../Components/Css/button.css";
 import jwt_decode from "jwt-decode";
+import AxiosClient from "../Components/axiosClient";
 
 const { Column, ColumnGroup } = Table;
 
@@ -23,39 +24,28 @@ function Books() {
     navigate(`/book/create`);
   };
 
+  const deleteABook = async (id) => {
+    await AxiosClient.delete(`/book/${id}`);
+  };
+
   const handleDelete = (id) => {
     var checkingDelete = window.confirm(
       `Do you want to delete book with id: ${id}`
     );
     if (checkingDelete) {
-      axios({
-        method: "delete",
-        url: `https://localhost:7233/api/book/${id}`,
-      })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      deleteABook(id);
 
       window.location.reload();
     }
   };
 
+  const getAllBooks = async () => {
+    let response = await AxiosClient.get("/book");
+    setBook(response.data);
+  };
+
   useEffect(() => {
-    axios({
-      method: "GET",
-      url: "https://localhost:7233/api/book",
-      data: null,
-    })
-      .then((data) => {
-        setBook(data.data);
-        console.log(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getAllBooks();
   }, []);
 
   return (
@@ -84,16 +74,12 @@ function Books() {
             <Column title="Title" dataIndex="title" key={book.title} />
             <ColumnGroup title="Category">
               <Column
-                //filteredValue={book.category.categoryId}
                 title="Category Id"
-                //dataIndex="category"
                 key={book.categoryId}
                 render={(_, record) => <p>{record.category.categoryId}</p>}
               />
               <Column
-                //dataSource={book.category}
                 title="Category Name"
-                //dataIndex="name"
                 key={book.name}
                 render={(_, record) => <p>{record.category.name}</p>}
               />

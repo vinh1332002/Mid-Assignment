@@ -1,11 +1,11 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Space, Table } from "antd";
 import "../Components/Css/button.css";
 import jwt_decode from "jwt-decode";
+import AxiosClient from "../Components/axiosClient";
 
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 
 function Categories() {
   let token = localStorage.getItem("access-token");
@@ -23,39 +23,27 @@ function Categories() {
     navigate(`/category/create`);
   };
 
+  const deleteABook = async (id) => {
+    await AxiosClient.delete(`/category/${id}`);
+  };
+
   const handleDelete = (id) => {
     var checkingDelete = window.confirm(
       `Do you want to delete category with id: ${id}`
     );
     if (checkingDelete) {
-      axios({
-        method: "delete",
-        url: `https://localhost:7233/api/category/${id}`,
-      })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
+      deleteABook(id)
       window.location.reload();
     }
   };
 
+  const getAllCategories = async () => {
+    let response = await AxiosClient.get("/category");
+    setCategory(response.data);
+  };
+
   useEffect(() => {
-    axios({
-      method: "GET",
-      url: "https://localhost:7233/api/category",
-      data: null,
-    })
-      .then((data) => {
-        setCategory(data.data);
-        console.log(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getAllCategories()
   }, []);
 
   return (

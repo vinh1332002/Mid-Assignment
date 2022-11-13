@@ -20,7 +20,8 @@ namespace TestWebAPI.Controllers
             _usersService = usersService;
         }
 
-        [Authorize(Roles = UserRoles.NormalUser)]
+        [AllowAnonymous]
+        //[Authorize(Roles = UserRoles.NormalUser)]
         [HttpPost("bookRequest")]
         public async Task<IActionResult> CreateBookBorrowingRequestAsync([FromBody]BorrowingRequestModel requestModel)
         {

@@ -1,38 +1,58 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import { useAuthContext } from "../Hooks/authContext";
+import { useState, useEffect } from "react";
 
 const { Header, Content, Footer } = Layout;
 
 function LayoutPage() {
+  let location = useLocation();
+
+  const [current, setCurrent] = useState(location.pathname);
+  useEffect(() => {
+    if (location) {
+      if (current !== location.pathname) {
+        setCurrent(location.pathname);
+      }
+    }
+  }, [location, current]);
+  function handleClick(e) {
+    setCurrent(e.key);
+  }
+
   const { isAuthenticated } = useAuthContext();
   return (
     <div>
       <Layout className="layout">
         <Header>
           <div className="logo" />
-          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="1">
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            selectedKeys={[current]}
+            onClick={handleClick}
+          >
+            <Menu.Item key="/">
               <Link to="/" style={{ padding: "10px" }}>
                 Home
               </Link>
             </Menu.Item>
 
-            <Menu.Item key="2">
+            <Menu.Item key="/book">
               {isAuthenticated === true && (
                 <Link to="/book" style={{ padding: "10px" }}>
                   Books
                 </Link>
               )}
             </Menu.Item>
-            <Menu.Item key="3">
+            <Menu.Item key="/category">
               {isAuthenticated === true && (
                 <Link to="/category" style={{ padding: "10px" }}>
                   Categories
                 </Link>
               )}
             </Menu.Item>
-            <Menu.Item key="4">
+            <Menu.Item key="/login">
               {isAuthenticated === false && (
                 <Link to="/login" style={{ padding: "10px" }}>
                   Login

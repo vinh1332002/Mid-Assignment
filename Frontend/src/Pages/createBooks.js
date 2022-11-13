@@ -1,9 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../Components/Css/button.css";
 import { useEffect } from "react";
 import jwt_decode from "jwt-decode";
+import AxiosClient from "../Components/axiosClient";
 
 function CreateBooks() {
   let token = localStorage.getItem("access-token");
@@ -28,37 +28,25 @@ function CreateBooks() {
     navigate(`/book`);
   };
 
+  const getCategory = async () => {
+    let response = await AxiosClient.get("/category");
+    setCategory(response.data);
+  };
+
   useEffect(() => {
-    axios({
-      method: "GET",
-      url: `https://localhost:7233/api/category`,
-      data: null,
-    })
-      .then((data) => {
-        console.log(data.data);
-        setCategory(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getCategory();
   }, []);
 
+  const createNewBook = async () => {
+    const data = {
+      title: book.title,
+      categoryId: book.categoryId
+    };
+    await AxiosClient.post("/book", data);
+  };
+
   const handleOnSubmit = (evt) => {
-    evt.preventDefault();
-    axios({
-      method: "post",
-      url: "https://localhost:7233/api/book",
-      data: {
-        title: book.title,
-        categoryId: book.categoryId,
-      },
-    })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    createNewBook();
 
     SetBook({
       title: "",
@@ -80,7 +68,6 @@ function CreateBooks() {
               <input
                 type="text"
                 onChange={handleChange}
-                //defaultValue={data.title}
                 name="title"
                 required
               ></input>

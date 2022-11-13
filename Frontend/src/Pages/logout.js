@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../Hooks/authContext";
-//import "../components/css/button.css";
 
 function Logout() {
     let navigate = useNavigate();

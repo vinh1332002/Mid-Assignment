@@ -8,11 +8,6 @@ function CreateCategories() {
   let token = localStorage.getItem("access-token");
   const decoded = jwt_decode(token);
 
-  // console.log(decoded);
-  // console.log(
-  //   decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
-  // );
-
   const [category, setCategory] = useState({
     name: "",
   });

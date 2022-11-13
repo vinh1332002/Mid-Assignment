@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import "../Components/Css/button.css";
 import jwt_decode from "jwt-decode"; 
+import AxiosClient from "../Components/axiosClient";
 
 function UpdateCategories() {
   const navigate = useNavigate();
@@ -21,36 +21,24 @@ function UpdateCategories() {
     name: "",
   });
 
+  const getACategory = async (id) => {
+    let response = await AxiosClient.get(`/category/${id}`);
+    setData(response.data);
+  };
+
   useEffect(() => {
-    axios({
-      method: "GET",
-      url: `https://localhost:7233/api/category/${id}`,
-      data: null,
-    })
-      .then((response) => {
-        console.log(response.data);
-        setData(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getACategory(id)
   }, []);
 
+  const updateACategory = async () => {
+    const info = {
+      name: category.name
+    };
+    await AxiosClient.put(`/category/${data.categoryId}`, info);
+  };
+
   const handleOnSubmit = (evt) => {
-    evt.preventDefault();
-    axios({
-      method: "put",
-      url: `https://localhost:7233/api/category/${data.categoryId}`,
-      data: {
-        name: category.name,
-      },
-    })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    updateACategory(); 
     handleBackToList();
   };
 
